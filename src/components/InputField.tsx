@@ -14,7 +14,7 @@ const InputField: React.FC<Props> = ({ placeholder, data, setData }) => {
       <TextInput
         style={styles.heading}
         placeholder={placeholder}
-        value={data}
+        value={data} 
         onChangeText={(text) => setData(text)}
       ></TextInput>
     </View>

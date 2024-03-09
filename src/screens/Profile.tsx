@@ -17,6 +17,7 @@ import PayIcon from "../icons/PayIcon";
 import HomeIcon from "../icons/HomeIcon";
 import HandIcon from "../icons/HandIcon";
 import RadioBtn from "../components/RadioBtn";
+import { useAuth } from "../context/AuthContext";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParams, "AddressChange">;
@@ -27,6 +28,7 @@ const windowWidth = Dimensions.get("window").width;
 const Profile = ({ navigation }: Props) => {
   const userData = useUser();
   const user = userData.user;
+  const authData = useAuth();
 
   const cardCode = user.paymentMethod?.hexCode?.slice(12, 16);
   const [noContactDelivery, setNoContactDelivery] = useState(
@@ -86,6 +88,11 @@ const Profile = ({ navigation }: Props) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Non-contact-delivery</Text>
         </View>
+
+        <Btn btnText="Log out" onPress={() => {
+          navigation.navigate('Login')
+          authData.logOut()
+          }} />
       </View>
     </SafeAreaView>
   );

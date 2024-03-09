@@ -27,6 +27,7 @@ type AuthContextType = {
   cart?: [];
   logIn: (email: string, password: string) => boolean;
   signUp: (name: string, email: string, password: string) => void;
+  logOut: () => void;
   getUser: (email: string, password: string) => any;
   getCart: (email: string, password: string) => any;
 };
@@ -53,6 +54,7 @@ export const AuthContext = createContext<AuthContextType>({
   cart: [],
   logIn: (email: string, password: string) => false,
   signUp: (name: string, email: string, password: string) => {},
+  logOut: () => {},
   getUser: (email: string, password: string) => {},
   getCart: (email: string, password: string) => {},
 });
@@ -104,6 +106,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     console.log(Users);
   };
 
+  const logOut = () => {
+    setEmail('');
+    setPassword('');
+  };
+
   const getUser = (email: string, password: string) => {
     const user = Users.find(
       (user) => user.email == email && user.password == password
@@ -122,6 +129,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     password,
     logIn,
     signUp,
+    logOut,
     getUser,
     getCart,
   };

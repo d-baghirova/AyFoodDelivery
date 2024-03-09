@@ -13,7 +13,7 @@ import Title from "../components/Title";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParams } from "../navigation/Index";
 import { useAuth } from "../context/AuthContext";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParams, "Login">;
@@ -22,6 +22,15 @@ type Props = {
 export default function Login({ navigation }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setEmail('')
+      setPassword('')
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const authData = useAuth();
   const onPressHandler = () => {
