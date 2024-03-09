@@ -49,17 +49,31 @@ const Cart = ({navigation} : Props) => {
     if (ucart) return ucart.map((p : any, n : number) => <ProductItem product={p} key={n} />)
   }
 
+  const countBill = () => {
+    if (ucart) {
+      const initialValue = 0;
+      const pricesLst = ucart.map((p : any) => p.price);
+      const overAllPrice = pricesLst.reduce((a, c) => a+c, initialValue)
+      return overAllPrice
+    }
+  }
+
+  const showBill = () => {
+    const price = countBill()
+    return `Summary: ${countBill()}$`
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.refreshContainer}>
         {/* <RefreshButton refresh={() => setIfPressed((prev) => !prev)} /> */}
+        <Text style={styles.title}>{showBill()}</Text>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.productsContainer}
       >
         {showUserCart()}
-        <Text></Text>
         {/* {showUserCart()} */}
         {/* {showUserProducts()} */}
       </ScrollView>
@@ -100,5 +114,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 100,
+  },
+  title: {
+    color: "#2D0C57",
+    fontWeight: "500",
+    fontSize: 22,
   },
 });
