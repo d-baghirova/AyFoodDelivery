@@ -33,28 +33,11 @@ const Cart = ({navigation} : Props) => {
   };
 
   const [ucart, setUcart] = useState(updateCart());
-  
-  const showProducts = (c: any, n: number) => {
-    return c.map((p: any, n: number) => (
-      <ProductItem showBtns={false} product={p} key={n} />
-    ));
-  };
-
-  const showUserProducts = () => {
-
-    return Users.map((u: any, i: number) => {
-      if (u.email == user.user.email) {
-        return showProducts(u.cart, i);
-      }
-    });
-  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('hello'); // Your custom logic here
       const nucart = updateCart()
       setUcart(nucart || [])
-      console.log(cart.cart)
       setTextContent(JSON.stringify(ucart));
     });
 
@@ -63,7 +46,7 @@ const Cart = ({navigation} : Props) => {
   }, [navigation]);
 
   const showUserCart = () => {
-    if (ucart) return ucart.map((p : any, n : number) => <ProductItem showBtns={false} product={p} key={n} />)
+    if (ucart) return ucart.map((p : any, n : number) => <ProductItem product={p} key={n} />)
   }
 
   return (
@@ -75,7 +58,7 @@ const Cart = ({navigation} : Props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.productsContainer}
       >
-        {ucart?.map((p,i) => <ProductItem showBtns={false} product={p} key={i} />)}
+        {showUserCart()}
         <Text></Text>
         {/* {showUserCart()} */}
         {/* {showUserProducts()} */}

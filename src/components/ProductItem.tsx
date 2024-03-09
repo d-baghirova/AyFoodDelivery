@@ -1,7 +1,7 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
+  Text, 
   View,
   Dimensions,
   Pressable,
@@ -28,10 +28,9 @@ type ProductProps = {
 type Props = {
   product: ProductProps;
   navigation?: StackNavigationProp<RootStackParams, "Login">;
-  showBtns: boolean;
 };
 
-const ProductItem = ({ product, showBtns, navigation }: Props) => {
+const ProductItem = ({ product, navigation }: Props) => {
   return (
     <Pressable
       onPress={() =>
@@ -57,14 +56,12 @@ const ProductItem = ({ product, showBtns, navigation }: Props) => {
               € / {product.isPiece === true ? "piece" : "kg"}
             </Text>
           </View>
-          {showBtns ? (
+          
             <View style={styles.btnsContainer}>
               <FavoriteBtn isBig={false} />
               <BasketBtn product={product} hasTitle={false} />
             </View>
-          ) : (
-            <></>
-          )}
+          
         </View>
       </View>
     </Pressable>

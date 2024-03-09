@@ -45,7 +45,7 @@ export default function Product({ route }: Props) {
           <Text style={styles.desciption}>{product.description}</Text>
           <View style={styles.btns}>
             <FavoriteBtn isBig={true} />
-            <BasketBtn hasTitle={true} />
+            <BasketBtn product={product} hasTitle={true} />
           </View>
         </View>
         <StatusBar style="auto" />

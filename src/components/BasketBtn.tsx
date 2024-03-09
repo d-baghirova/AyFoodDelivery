@@ -12,14 +12,14 @@ type Props = {
 };
 
 const BasketBtn = ({ hasTitle, product }: Props) => {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(product.isInCart);
 
   const cart = useCart();
 
   const handlePress = () => {
-    setIsActive((prev) => !prev);
-    product.isInCart = !isActive;
-    if (cart && cart.addToCart) cart.addToCart(product);
+    setIsActive((prev:boolean) => !prev);
+    if (cart && cart.addToCart && !isActive) cart.addToCart(product);
+    if (cart && cart.removeFromCart && isActive) cart.removeFromCart(product);
   };
 
   return (

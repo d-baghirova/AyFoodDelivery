@@ -8,8 +8,8 @@ type Product = {
   price: number;
   country: string;
   description: string;
-  isFavorite: false;
-  isInCart: false;
+  isFavorite: boolean;
+  isInCart: boolean;
   img: undefined;
   isPiece: false; // Продается по весу
 };
@@ -18,16 +18,19 @@ type CartType = {
   email: string;
   cart?: any[];
   addToCart?: (product: Product) => void;
+  removeFromCart?: (product: Product) => void;
 };
 
 type CartContextType = {
   cart: any[];
   addToCart?: (product: Product) => void;
+  removeFromCart?: (product: Product) => void;
 };
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
   addToCart: (product: Product) => {},
+  removeFromCart: (product: Product) => {}
 });
 
 export const useCart = () => {
@@ -45,10 +48,27 @@ const CartProvider: React.FC<CartProviderProps> = ({
   const user = userData.getUser(userData.email, userData.password);
   const cart = userData.getCart(userData.email, userData.password);
 
+  function filterUniqueTitles(products: any) {
+    const uniqueTitles: { [key: string]: boolean } = {};
+    const result = products.filter((product : any) => {
+      if (!uniqueTitles[product.title]) {
+        uniqueTitles[product.title] = true;
+        return true;
+      }
+      return false;
+    });
+    return result;
+  }
+  
+
   const addToCart = (product: Product) => {
     const ucart = cart;
-
+    product.isInCart = true;
     ucart.push(product);
+
+    const ncart = ucart.filter((p : any) => p.isInCart == true)
+
+    const newCart = filterUniqueTitles(ncart)
 
     let index = null;
     Users.forEach((u, i) =>
@@ -56,12 +76,30 @@ const CartProvider: React.FC<CartProviderProps> = ({
     );
 
     if (index != null) {
-      Users[index].cart = ucart;
+      Users[index].cart = newCart;
       // console.log(Users[index].cart);
     }
   };
 
-  const contextValue = { cart, addToCart };
+  const removeFromCart = (product: Product) => {
+    const ucart = cart;
+    product.isInCart = false;
+    const ncart = ucart.filter((p : any) => p.title !== product.title && p.isInCart==true)
+
+    const newCart = filterUniqueTitles(ncart)
+
+    let index = null;
+    Users.forEach((u, i) =>
+      u.email == user.email ? (index = i) : (index = null)
+    );
+
+    if (index != null) {
+      Users[index].cart = newCart;
+      // console.log(Users[index].cart)
+    }
+  }
+
+  const contextValue = { cart, addToCart, removeFromCart };
 
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
