@@ -103,7 +103,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       cart: [],
     };
     Users.push(user);
-    console.log(Users);
   };
 
   const logOut = () => {

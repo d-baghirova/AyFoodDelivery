@@ -43,10 +43,23 @@ const Cart = ({navigation} : Props) => {
 
     // Return the function to unsubscribe from the event when the component unmounts
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, ifPressed]);
+
+  const refreshHandle = (product : any) => {
+    if (cart && cart.removeFromCart) {
+      cart.removeFromCart(product)}
+    const nucart = updateCart()
+    setUcart(nucart || [])
+    console.log(ucart)
+    console.log('babe')
+    console.log(cart.cart)
+  }
 
   const showUserCart = () => {
-    if (ucart) return ucart.map((p : any, n : number) => <ProductItem product={p} key={n} />)
+    if (ucart) return ucart.map((p : any, n : number) => <View key={n}>
+      <Pressable onPress={() => refreshHandle(p)}><View style={styles.delete}><Text style={styles.white}>x</Text></View></Pressable>
+      <ProductItem showBtns={false} product={p} />
+    </View>)
   }
 
   const countBill = () => {
@@ -54,19 +67,19 @@ const Cart = ({navigation} : Props) => {
       const initialValue = 0;
       const pricesLst = ucart.map((p : any) => p.price);
       const overAllPrice = pricesLst.reduce((a, c) => a+c, initialValue)
-      return Math.round(overAllPrice *100)/100
+      return overAllPrice
     }
   }
 
   const showBill = () => {
     const price = countBill()
-    return `Summary: ${countBill()}$`
+    return `Summary: ${Math.round(countBill()*100)/100}$`
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.refreshContainer}>
-        {/* <RefreshButton refresh={() => setIfPressed((prev) => !prev)} /> */}
+        {/* <RefreshButton refresh={refreshHandle} />  */}
         <Text style={styles.title}>{showBill()}</Text>
       </View>
       <ScrollView
@@ -120,4 +133,16 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 22,
   },
+  delete: {
+    backgroundColor: '#E7E2F3',
+    borderRadius: 12,
+    height: 24,
+    width: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5
+  },
+  white: {
+    color: 'red'
+  }
 });

@@ -26,11 +26,12 @@ type ProductProps = {
   img: ImageSourcePropType;
 };
 type Props = {
+  showBtns: boolean;
   product: ProductProps;
   navigation?: StackNavigationProp<RootStackParams, "Login">;
 };
 
-const ProductItem = ({ product, navigation }: Props) => {
+const ProductItem = ({ showBtns, product, navigation }: Props) => {
   return (
     <Pressable
       onPress={() =>
@@ -56,12 +57,12 @@ const ProductItem = ({ product, navigation }: Props) => {
               € / {product.isPiece === true ? "piece" : "kg"}
             </Text>
           </View>
-          
+          {showBtns ?
             <View style={styles.btnsContainer}>
               <FavoriteBtn isBig={false} />
               <BasketBtn product={product} hasTitle={false} />
-            </View>
-          
+            </View> :
+          <></>}
         </View>
       </View>
     </Pressable>

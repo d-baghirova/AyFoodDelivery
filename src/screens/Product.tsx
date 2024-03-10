@@ -43,10 +43,10 @@ export default function Product({ route }: Props) {
           <Text style={styles.greenText}>~ 150 gr / piece</Text>
           <Text style={styles.country}>{product.country}</Text>
           <Text style={styles.desciption}>{product.description}</Text>
-          <View style={styles.btns}>
+          {/* <View style={styles.btns}>
             <FavoriteBtn isBig={true} />
             <BasketBtn product={product} hasTitle={true} />
-          </View>
+          </View> */}
         </View>
         <StatusBar style="auto" />
       </ImageBackground>

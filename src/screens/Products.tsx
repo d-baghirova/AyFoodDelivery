@@ -11,13 +11,14 @@ import { Users } from "../data/Users";
 import { useUser } from "../context/UserContext";
 
 type Props = {
+  showBtns: boolean;
   route: any;
   navigation: StackNavigationProp<RootStackParams, "Login">;
 };
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function Products({ navigation, route }: Props) {
+export default function Products({ showBtns, navigation, route }: Props) {
   const { params } = route;
   const user = useUser();
   const data = params.data.products;
@@ -26,6 +27,7 @@ export default function Products({ navigation, route }: Props) {
   function drawProducts(data : any) {
     return data.map((product: any, i: number) => (
       <ProductItem
+        showBtns={true}
         product={product}
         key={i}
         navigation={navigation}

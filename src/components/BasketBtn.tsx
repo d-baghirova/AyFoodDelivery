@@ -7,19 +7,28 @@ import { useCart } from "../context/CartContext";
 import { Users } from "../data/Users";
 
 type Props = {
+  refresh?: () => void;
   product: any; 
   hasTitle: boolean;
 };
 
-const BasketBtn = ({ hasTitle, product }: Props) => {
-  const [isActive, setIsActive] = useState(product.isInCart);
-
+const BasketBtn = ({ refresh, hasTitle, product }: Props) => {
   const cart = useCart();
 
-  const handlePress = () => {
-    setIsActive((prev:boolean) => !prev);
+  const toggleActive = () => {
+    const cart = useCart();
+    return cart.cart.some((p : any) => p.title == product.title)
+  }
+
+  const [isActive, setIsActive] = useState(toggleActive());
+
+  const handlePress = () => { 
     if (cart && cart.addToCart && !isActive) cart.addToCart(product);
-    if (cart && cart.removeFromCart && isActive) cart.removeFromCart(product);
+    if (cart && cart.removeFromCart && isActive) {
+      cart.removeFromCart(product)
+      if (refresh) {refresh(); refresh()}
+    };
+    setIsActive(prev => !prev);
   };
 
   return (
