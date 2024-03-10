@@ -54,7 +54,7 @@ const Cart = ({navigation} : Props) => {
       const initialValue = 0;
       const pricesLst = ucart.map((p : any) => p.price);
       const overAllPrice = pricesLst.reduce((a, c) => a+c, initialValue)
-      return overAllPrice
+      return Math.round(overAllPrice *100)/100
     }
   }
 
