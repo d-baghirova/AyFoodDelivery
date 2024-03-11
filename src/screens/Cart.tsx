@@ -14,6 +14,7 @@ import ProductItem from "../components/ProductItem";
 import RefreshButton from "../components/RefreshButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParams } from "../navigation/Index";
+import Btn from "../components/Btn";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -23,6 +24,7 @@ type Props = {
 
 const Cart = ({navigation} : Props) => {
   const [ifPressed, setIfPressed] = useState(false);
+  const [ifBought, setIfBought] = useState(false);
   const [textContent, setTextContent] = useState("");
   let user = useUser();
   let cart = useCart();
@@ -43,7 +45,7 @@ const Cart = ({navigation} : Props) => {
 
     // Return the function to unsubscribe from the event when the component unmounts
     return unsubscribe;
-  }, [navigation, ifPressed]);
+  }, [navigation, ifPressed, ifBought]);
 
   const refreshHandle = (product : any) => {
     if (cart && cart.removeFromCart) {
@@ -89,6 +91,11 @@ const Cart = ({navigation} : Props) => {
         {showUserCart()}
         {/* {showUserCart()} */}
         {/* {showUserProducts()} */}
+        <Btn btnText="Buy" onPress={() =>{if (cart && cart.pay) {
+          cart.pay()
+          setUcart([])
+          setIfBought(prev => !prev)
+        }}} />
       </ScrollView>
     </View>
   );

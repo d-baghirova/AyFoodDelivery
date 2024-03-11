@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, Text, View, Alert } from "react-native";
 import Btn from "../components/Btn";
 import InputField from "../components/InputField";
 import PasswordInput from "../components/PasswordInput";
@@ -19,10 +19,35 @@ export default function SignUp({ navigation }: Props) {
   const [password, setPassword] = useState(""); 
   const authData = useAuth();
 
-  const onPressHandler = () => {
-    authData.signUp(name, email, password);
-    navigation.navigate("Login");
+  const validation = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+   
+    if (!name || !email || !password) {
+      return false;
+    }
+  
+    if (!email.match(emailRegex) || name.length < 2 || name.length > 50) {
+      return false;
+    }
+  
+    if (!password.match(passwordRegex)) {
+      return false;
+    }
+    
+    return true;
   };
+  
+
+  const onPressHandler = () => {
+    if (validation()) {
+      authData.signUp(name, email, password);
+      navigation.navigate("Login");
+    } else {
+      Alert.alert("Invalid format of either name, email, or password");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container}>

@@ -5,7 +5,9 @@ type Props = {
   btnText: string;
   onPress: () => void;
 };
+
 const windowWidth = Dimensions.get("window").width;
+
 const Btn = ({ btnText, onPress }: Props) => {
   return (
     <View style={styles.container}>

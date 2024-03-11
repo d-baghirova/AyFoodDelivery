@@ -19,18 +19,21 @@ type CartType = {
   cart?: any[];
   addToCart?: (product: Product) => void;
   removeFromCart?: (product: Product) => void;
+  pay?: () => void;
 };
 
 type CartContextType = {
   cart: any[];
   addToCart?: (product: Product) => void;
   removeFromCart?: (product: Product) => void;
+  pay?: () => void;
 };
 
 export const CartContext = createContext<CartContextType>({
   cart: [],
   addToCart: (product: Product) => {},
-  removeFromCart: (product: Product) => {}
+  removeFromCart: (product: Product) => {},
+  pay: () => {}
 });
 
 export const useCart = () => {
@@ -99,7 +102,20 @@ const CartProvider: React.FC<CartProviderProps> = ({
     }
   }
 
-  const contextValue = { cart, addToCart, removeFromCart };
+  const pay = () => {
+    let index = null;
+    Users.forEach((u, i) =>
+      u.email == user.email ? (index = i) : (index = null)
+    );
+
+    alert(`Successful trensaction`)
+
+    if (index != null) {
+      Users[index].cart = [];
+    }
+  }
+
+  const contextValue = { cart, addToCart, removeFromCart, pay };
 
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
